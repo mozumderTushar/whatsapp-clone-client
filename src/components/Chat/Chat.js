@@ -1,16 +1,19 @@
 import { Avatar, IconButton } from '@material-ui/core';
 import { AttachFile, InsertEmoticon, MoreVert, SearchOutlined } from '@material-ui/icons';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
+import { UserContext } from '../../App';
 import './Chat.css'
 
 const Chat = ({ messages }) => {
+    const [loggedInUser, setLoggedInUser] = useContext(UserContext);
+    const {name, email, photo} = loggedInUser;
 
     const [input, setInput] = useState("")
 
     const sendMessage = (e) => {
         e.preventDefault();
 
-        const details = { message: input, name: 'DEMO APP', timestamp: 'just now!', received:false }
+        const details = { message: input, name: name, timestamp: 'just now!', received:false }
 
         fetch('https://whatsapp-clone-scic.herokuapp.com/messages/new', {
             method: 'POST',
