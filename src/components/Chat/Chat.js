@@ -6,7 +6,8 @@ import './Chat.css'
 
 const Chat = ({ messages }) => {
     const [loggedInUser, setLoggedInUser] = useContext(UserContext);
-    const {name, email, photo} = loggedInUser;
+    const { name, email, photo } = loggedInUser;
+    const time = new Date().toLocaleTimeString();
 
     const [input, setInput] = useState("")
 
@@ -14,10 +15,7 @@ const Chat = ({ messages }) => {
         e.preventDefault();
 
 
-        const details = { message: input, name: name, timestamp: 'just now!', received:false }
-
-        const details = { message: input, name: 'DEMO APP', timestamp: 'just now!', received:true }
-
+        const details = { message: input, name: name, timestamp: time, received: false }
 
         fetch('https://whatsapp-clone-scic.herokuapp.com/messages/new', {
             method: 'POST',
@@ -29,7 +27,7 @@ const Chat = ({ messages }) => {
             .then(response => response.json())
             .then(data => console.log(data))
 
-            setInput("");
+        setInput("");
     }
 
     return (
