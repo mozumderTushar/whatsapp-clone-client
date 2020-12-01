@@ -1,14 +1,17 @@
 import { Avatar, IconButton } from '@material-ui/core';
 import { Chat, DonutLarge, MoreVert, SearchOutlined } from '@material-ui/icons';
-import React from 'react';
+import React, { useContext } from 'react';
+import { UserContext } from '../../App';
 import SidebarChat from '../SidebarChat/SidebarChat';
 import './Sidebar.css'
 
 const Sidebar = () => {
+    const [loggedInUser, setLoggedInUser] = useContext(UserContext);
+    const {name, email, photo} = loggedInUser;
     return (
         <div className='sidebar'>
             <div className="sidebar__header">
-                <Avatar />
+                <Avatar alt="img" src={`${photo}`}/>
                 <div className="sidebar__headerRight">
                     <IconButton>
                         <DonutLarge />

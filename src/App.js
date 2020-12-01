@@ -1,43 +1,38 @@
 import './App.css';
-import Sidebar from './components/Sidebar/Sidebar';
-import Chat from './components/Chat/Chat';
-import { useEffect, useState } from 'react';
-import Pusher from "pusher-js"
+import Login from './components/Login/Login';
+import NotMatch from './components/NotMatch/NotMatch';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route
+} from "react-router-dom";
+import { createContext, useState } from 'react';
+import Home from './components/Home/Home';
+import PrivateRoute from './components/PrivateRoute/PrivateRoute';
+
+export const UserContext = createContext();
 
 function App() {
-
-  const [messages, setMessages] = useState([]);
-
-  useEffect(() => {
-    fetch('https://whatsapp-clone-scic.herokuapp.com/messages/sync')
-    .then(response => response.json())
-    .then(data => setMessages(data))
-  }, [])
-
-  useEffect(() => {
-    const pusher = new Pusher('27751498ccec5fb1e977', {
-      cluster: 'ap2'
-    });
-
-    const channel = pusher.subscribe('message');
-    channel.bind('inserted', (newMessage) => {
-      setMessages([...messages, newMessage])
-    });
-
-    return () => {
-      channel.unbind_all();
-      channel.unsubscribe();
-    };
-
-  }, [messages])
-
+  const [loggedInUser, setLoggedInUser] = useState({});
   return (
-    <div className="app">
-      <div className="app__body">
-        <Sidebar />
-        <Chat messages={messages}/>
-      </div>
-    </div>
+    <UserContext.Provider value={[loggedInUser, setLoggedInUser]}>
+      <Router>
+        <Switch>
+          <Route path="/login" >
+            <Login />
+          </Route>
+          {/* <Route path="/" >
+            <Home />
+          </Route> */}
+          <PrivateRoute path="/" >
+            <Home />
+          </PrivateRoute>
+          <Route path="*" >
+            <NotMatch />
+          </Route>
+        </Switch>
+      </Router>
+    </UserContext.Provider>
   );
 }
 
