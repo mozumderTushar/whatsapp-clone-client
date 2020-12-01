@@ -13,7 +13,11 @@ const Chat = ({ messages }) => {
     const sendMessage = (e) => {
         e.preventDefault();
 
+
         const details = { message: input, name: name, timestamp: 'just now!', received:false }
+
+        const details = { message: input, name: 'DEMO APP', timestamp: 'just now!', received:true }
+
 
         fetch('https://whatsapp-clone-scic.herokuapp.com/messages/new', {
             method: 'POST',
